@@ -67,13 +67,16 @@ func runServer(configFileLocation string) {
 		*utils.Cfg.ServiceSettings.EnableDeveloper = true
 	}
 
+	if err := app.TestFileConnection(); err != nil {
+		l4g.Error("Problem with file storage settings: " + err.Error())
+	}
+
 	app.NewServer()
 	app.InitStores()
 	api.InitRouter()
 	wsapi.InitRouter()
 	api4.InitApi(false)
 	api.InitApi()
-	app.InitPlugins()
 	wsapi.InitApi()
 	web.InitWeb()
 
